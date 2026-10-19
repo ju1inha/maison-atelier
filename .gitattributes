@@ -1,0 +1,2 @@
+# Keep line endings consistent so Godot's text files (.gd, .tscn, .tres) don't show fake changes
+* text=auto eol=lf

@@ -1,0 +1,12 @@
+# Godot 4 cache and imported-asset data (rebuilt automatically when you open the project)
+.godot/
+
+# Export output and platform templates
+/build/
+/android/
+export_presets.cfg
+
+# OS clutter
+.DS_Store
+Thumbs.db
+desktop.ini
