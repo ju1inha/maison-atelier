@@ -1,0 +1,85 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/location.gd" id="1_location"]
+[ext_resource type="PackedScene" path="res://scenes/world/prop.tscn" id="2_prop"]
+[ext_resource type="PackedScene" path="res://scenes/world/door.tscn" id="3_door"]
+
+[node name="AtelierInterior" type="Node2D"]
+script = ExtResource("1_location")
+location_name = "The Atelier"
+bounds = Rect2(0, 0, 1600, 900)
+
+[node name="Ground" type="Node2D" parent="."]
+
+[node name="Floor" type="ColorRect" parent="Ground"]
+offset_right = 1600.0
+offset_bottom = 900.0
+mouse_filter = 2
+color = Color(0.937, 0.902, 0.839, 1)
+
+[node name="Rug" type="ColorRect" parent="Ground"]
+offset_left = 560.0
+offset_top = 440.0
+offset_right = 1040.0
+offset_bottom = 720.0
+mouse_filter = 2
+color = Color(0.369, 0.102, 0.114, 0.35)
+
+[node name="Doors" type="Node2D" parent="."]
+
+[node name="ExitDoor" parent="Doors" instance=ExtResource("3_door")]
+position = Vector2(800, 868)
+prompt_text = "Step outside"
+target_scene = "res://scenes/world/side_street.tscn"
+target_spawn = "AtelierDoor"
+show_mat = true
+
+[node name="Entities" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="BackWall" parent="Entities" instance=ExtResource("2_prop")]
+position = Vector2(800, 170)
+size = Vector2(1600, 170)
+color = Color(0.165, 0.145, 0.133, 1)
+
+[node name="Counter" parent="Entities" instance=ExtResource("2_prop")]
+position = Vector2(800, 370)
+display_name = "Counter"
+size = Vector2(320, 70)
+
+[node name="RackA" parent="Entities" instance=ExtResource("2_prop")]
+position = Vector2(300, 340)
+display_name = "Clothing Rack"
+size = Vector2(240, 60)
+color = Color(0.788, 0.663, 0.431, 1)
+label_color = Color(0.078, 0.071, 0.067, 1)
+
+[node name="RackB" parent="Entities" instance=ExtResource("2_prop")]
+position = Vector2(300, 640)
+display_name = "Clothing Rack"
+size = Vector2(240, 60)
+color = Color(0.788, 0.663, 0.431, 1)
+label_color = Color(0.078, 0.071, 0.067, 1)
+
+[node name="FittingRoom" parent="Entities" instance=ExtResource("2_prop")]
+position = Vector2(1380, 380)
+display_name = "Fitting Room"
+size = Vector2(280, 200)
+color = Color(0.369, 0.102, 0.114, 1)
+
+[node name="Mannequin1" parent="Entities" instance=ExtResource("2_prop")]
+position = Vector2(1150, 560)
+size = Vector2(44, 110)
+color = Color(0.961, 0.937, 0.89, 1)
+footprint = 24.0
+
+[node name="Mannequin2" parent="Entities" instance=ExtResource("2_prop")]
+position = Vector2(1260, 640)
+size = Vector2(44, 110)
+color = Color(0.961, 0.937, 0.89, 1)
+footprint = 24.0
+
+[node name="Spawns" type="Node2D" parent="."]
+
+[node name="Entrance" type="Marker2D" parent="Spawns"]
+position = Vector2(800, 800)

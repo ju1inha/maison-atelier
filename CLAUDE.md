@@ -70,8 +70,8 @@ These games inspire the feel and mechanics. Everything in Maison Atelier (charac
 
 - **Phase 0 (done):** Concept prototyped in Base44 as "Elite Stylist: Couture Atelier."
 - **HTML/JS prototype (skipped):** Julia decided (2026-10-19) to skip the browser prototype and build directly in Godot, starting from scratch.
-- **Current:** Godot 4.7 project created and pushed to a public GitHub repo. No gameplay yet.
-- **Next:** decide 2D vs. 3D for the first slice (see section 7), then build the first playable slice (section 8).
+- **Current:** first walkable 2D slice works: a side street with five buildings, walkable Atelier and Home interiors, doors with fades, and a Day/Time HUD. All art is placeholder.
+- **Next:** Julia is putting together a mood board; restyle the slice to match it, then start the core loop inside the Atelier (section 8).
 
 ### Decisions log
 
@@ -79,6 +79,9 @@ These games inspire the feel and mechanics. Everything in Maison Atelier (charac
 - 2026-10-19: Project lives at `C:\Users\julia\OneDrive\Desktop\Projects\MaisonAtelier`.
 - 2026-10-19: Repo is public from day one (portfolio piece): https://github.com/ju1inha/maison-atelier
 - 2026-10-19: Long-term goal is a 3D game. Art starts as placeholder shapes and gets swapped for real models later (see section 7, "Placeholder art and swapping in real models").
+- 2026-10-19: **First slice is 2D, top-down with an angled view** (like Stardew Valley). 3D comes later.
+- 2026-10-19: **Interiors are walkable**, not menus. The player walks around inside the Atelier and Home freely.
+- 2026-10-19: **Moving between places never uses time.** Time only advances from specific actions (e.g. finishing boutique hours), decided later.
 
 ## 4. Core gameplay loop
 
@@ -196,14 +199,18 @@ Output: a score (0–100) mapped to a reaction tier, plus money, reputation and 
 
 ## 7. Technical design (Godot 4.7, GDScript)
 
-### 2D or 3D for the first slice [CONFIRM]
+### 2D now, 3D later (decided 2026-10-19)
 
-The long-term goal is 3D. Julia said 2D is fine for now. Trade-off to decide before building the city:
+The first slice is 2D. Menus, data, scoring, calendar and save/load will carry over to 3D unchanged; only the walkable world scenes (map, player movement, camera) get rebuilt in 3D later.
 
-- **2D first:** faster to get playable; menus, data, scoring, calendar and save/load all carry over to 3D unchanged. The city scenes (map, player movement, camera) would be rebuilt later.
-- **3D with placeholder shapes from the start:** a bit more setup (camera, lighting), but the city never has to be rebuilt; real models are swapped in later.
+### How the walkable world works
 
-Either way, everything that isn't the city (UI screens, data, scoring, calendar, saves) is identical.
+- `scenes/main.tscn` (`scripts/main.gd`) owns the single Player and the HUD. `travel_to(scene_path, spawn_name)` fades out, swaps the location, puts the player at a spawn point, and fades in.
+- Every place (street or interior) is a **Location** (`scripts/world/location.gd`) with `location_name`, `bounds` (camera limits + invisible edge walls), an `Entities` node (Y Sort on; the player goes here), and a `Spawns` node of Marker2D points.
+- **Prop** (`scenes/world/prop.tscn`) is any solid block: building, wall, furniture. Origin = bottom-center. `size`, `color`, `display_name`, `has_door`, and `footprint` (collision depth, so tall thin things can be walked behind).
+- **Door** (`scenes/world/door.tscn`) is an interaction zone: `prompt_text`, `target_scene` (empty = "Closed for now"), `target_spawn`. Doors find Main through the `"main"` group.
+- Controls (Project Settings → Input Map): `move_left/right/up/down` (WASD, arrows, left stick), `interact` (E, Enter, gamepad A).
+- To add a building: put a Prop under the street's `Entities`, a Door under `Doors` just below it, and (if enterable) a new interior scene plus a spawn Marker2D outside the door.
 
 ### Placeholder art and swapping in real models
 
@@ -249,16 +256,17 @@ assets/
 ## 8. Roadmap
 
 1. Project setup + public GitHub repo (done 2026-10-19)
-2. Decide 2D vs. 3D for the first slice
-3. First playable slice: one small district (the "charming side street") with the atelier and 2–3 buildings, a player you can walk around, and press E to enter the atelier
-4. Core loop inside the atelier: one client → brief → style → score → reward
-5. Data-driven items and clients (at least 30 items, 8 clients)
-6. Clear, specific client feedback
-7. Day/calendar loop with restocking
-8. Save/load
-9. Visual polish pass (typography, transitions, reveal screen)
-10. One relationship arc + one event, as a vertical slice
-11. Later: more districts, audio, real models and animation
+2. Decide 2D vs. 3D for the first slice (done: 2D)
+3. First playable slice: side street, walkable Atelier and Home, doors with fades (done 2026-10-19)
+4. Restyle to match Julia's mood board
+5. Core loop inside the atelier: one client → brief → style → score → reward
+6. Data-driven items and clients (at least 30 items, 8 clients)
+7. Clear, specific client feedback
+8. Day/calendar loop with restocking
+9. Save/load
+10. Visual polish pass (typography, transitions, reveal screen)
+11. One relationship arc + one event, as a vertical slice
+12. Later: more districts, audio, real models and animation
 
 ## 9. Working rules for Claude Code
 

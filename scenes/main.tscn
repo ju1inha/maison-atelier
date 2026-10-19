@@ -1,0 +1,54 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+
+[node name="Main" type="Node" groups=["main"]]
+script = ExtResource("1_main")
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="ColorRect" parent="HUD"]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 304.0
+offset_bottom = 96.0
+mouse_filter = 2
+color = Color(0.078, 0.071, 0.067, 0.85)
+
+[node name="GoldRule" type="ColorRect" parent="HUD/Panel"]
+offset_right = 280.0
+offset_bottom = 2.0
+mouse_filter = 2
+color = Color(0.788, 0.663, 0.431, 1)
+
+[node name="DayLabel" type="Label" parent="HUD/Panel"]
+offset_left = 16.0
+offset_top = 10.0
+offset_right = 264.0
+offset_bottom = 32.0
+theme_override_colors/font_color = Color(0.788, 0.663, 0.431, 1)
+theme_override_font_sizes/font_size = 14
+text = "DAY 1  ·  MORNING"
+
+[node name="PlaceLabel" type="Label" parent="HUD/Panel"]
+offset_left = 16.0
+offset_top = 32.0
+offset_right = 264.0
+offset_bottom = 64.0
+theme_override_colors/font_color = Color(0.961, 0.937, 0.89, 1)
+theme_override_font_sizes/font_size = 22
+text = "Side Street"
+
+[node name="FadeLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="Fade" type="ColorRect" parent="FadeLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.078, 0.071, 0.067, 0)

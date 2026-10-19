@@ -1,0 +1,72 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/location.gd" id="1_location"]
+[ext_resource type="PackedScene" path="res://scenes/world/prop.tscn" id="2_prop"]
+[ext_resource type="PackedScene" path="res://scenes/world/door.tscn" id="3_door"]
+
+[node name="HomeInterior" type="Node2D"]
+script = ExtResource("1_location")
+location_name = "Home"
+bounds = Rect2(0, 0, 1280, 720)
+
+[node name="Ground" type="Node2D" parent="."]
+
+[node name="Floor" type="ColorRect" parent="Ground"]
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+color = Color(0.914, 0.875, 0.812, 1)
+
+[node name="Rug" type="ColorRect" parent="Ground"]
+offset_left = 480.0
+offset_top = 380.0
+offset_right = 800.0
+offset_bottom = 580.0
+mouse_filter = 2
+color = Color(0.788, 0.663, 0.431, 0.3)
+
+[node name="Doors" type="Node2D" parent="."]
+
+[node name="ExitDoor" parent="Doors" instance=ExtResource("3_door")]
+position = Vector2(640, 690)
+prompt_text = "Step outside"
+target_scene = "res://scenes/world/side_street.tscn"
+target_spawn = "HomeDoor"
+show_mat = true
+
+[node name="Entities" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="BackWall" parent="Entities" instance=ExtResource("2_prop")]
+position = Vector2(640, 140)
+size = Vector2(1280, 140)
+color = Color(0.227, 0.196, 0.188, 1)
+
+[node name="Bed" parent="Entities" instance=ExtResource("2_prop")]
+position = Vector2(240, 360)
+display_name = "Bed"
+size = Vector2(220, 150)
+color = Color(0.961, 0.937, 0.89, 1)
+label_color = Color(0.078, 0.071, 0.067, 1)
+
+[node name="Desk" parent="Entities" instance=ExtResource("2_prop")]
+position = Vector2(640, 250)
+display_name = "Desk"
+size = Vector2(200, 70)
+color = Color(0.541, 0.435, 0.306, 1)
+
+[node name="Wardrobe" parent="Entities" instance=ExtResource("2_prop")]
+position = Vector2(1060, 300)
+display_name = "Wardrobe"
+size = Vector2(200, 150)
+
+[node name="Sofa" parent="Entities" instance=ExtResource("2_prop")]
+position = Vector2(960, 560)
+display_name = "Sofa"
+size = Vector2(240, 70)
+color = Color(0.369, 0.102, 0.114, 1)
+
+[node name="Spawns" type="Node2D" parent="."]
+
+[node name="Entrance" type="Marker2D" parent="Spawns"]
+position = Vector2(640, 620)
