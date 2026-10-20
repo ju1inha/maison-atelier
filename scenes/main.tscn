@@ -5,7 +5,7 @@
 [node name="Main" type="Node" groups=["main"]]
 script = ExtResource("1_main")
 
-[node name="World" type="Node2D" parent="."]
+[node name="World" type="Node3D" parent="."]
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
@@ -40,6 +40,40 @@ offset_bottom = 64.0
 theme_override_colors/font_color = Color(0.961, 0.937, 0.89, 1)
 theme_override_font_sizes/font_size = 22
 text = "Side Street"
+
+[node name="Prompt" type="Label" parent="HUD"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -120.0
+offset_right = 300.0
+offset_bottom = -84.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.961, 0.937, 0.89, 1)
+theme_override_colors/font_outline_color = Color(0.078, 0.071, 0.067, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 24
+text = "[E]  Enter"
+horizontal_alignment = 1
+
+[node name="Controls" type="Label" parent="HUD"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -44.0
+offset_right = 824.0
+offset_bottom = -20.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.961, 0.937, 0.89, 0.85)
+theme_override_colors/font_outline_color = Color(0.078, 0.071, 0.067, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 14
+text = "WASD move  ·  Shift run  ·  Click to look around with the mouse  ·  Esc frees the mouse  ·  E interact"
 
 [node name="FadeLayer" type="CanvasLayer" parent="."]
 layer = 10

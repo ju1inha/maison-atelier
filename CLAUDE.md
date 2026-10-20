@@ -70,8 +70,8 @@ These games inspire the feel and mechanics. Everything in Maison Atelier (charac
 
 - **Phase 0 (done):** Concept prototyped in Base44 as "Elite Stylist: Couture Atelier."
 - **HTML/JS prototype (skipped):** Julia decided (2026-10-19) to skip the browser prototype and build directly in Godot, starting from scratch.
-- **Current:** first walkable 2D slice works: a side street with five buildings, walkable Atelier and Home interiors, doors with fades, and a Day/Time HUD. All art is placeholder.
-- **Next:** Julia is putting together a mood board; restyle the slice to match it, then start the core loop inside the Atelier (section 8).
+- **Current:** the walkable slice is now **3D**: a Manhattan-style street (SoHo cast-iron shops + brownstones) in golden-hour light, a cute chibi placeholder player with a mouse-orbit camera, walkable 3D Atelier and Home interiors, doors with fades, and a Day/Time HUD. All art is generated placeholder shapes.
+- **Next:** Julia's mood board → refine the look; then the core loop inside the Atelier (section 8).
 
 ### Decisions log
 
@@ -79,7 +79,10 @@ These games inspire the feel and mechanics. Everything in Maison Atelier (charac
 - 2026-10-19: Project lives at `C:\Users\julia\OneDrive\Desktop\Projects\MaisonAtelier`.
 - 2026-10-19: Repo is public from day one (portfolio piece): https://github.com/ju1inha/maison-atelier
 - 2026-10-19: Long-term goal is a 3D game. Art starts as placeholder shapes and gets swapped for real models later (see section 7, "Placeholder art and swapping in real models").
-- 2026-10-19: **First slice is 2D, top-down with an angled view** (like Stardew Valley). 3D comes later.
+- 2026-10-19: ~~First slice is 2D~~ → replaced the same day: **the game is 3D now** (2D files deleted; they're in git history).
+- 2026-10-19: **Setting: New York, upscale Manhattan.** First street mixes SoHo cast-iron boutiques (Atelier, Café, Showroom, Gallery) with a brownstone for Home. All shop names are placeholders.
+- 2026-10-19: **Characters are cute anime/chibi style** (big heads). Real models later, likely made in VRoid Studio (free) and imported (needs a VRM import addon; ask before adding it).
+- 2026-10-19: **Camera: third-person mouse orbit** (click to capture the mouse, Esc to release; right stick on gamepad).
 - 2026-10-19: **Interiors are walkable**, not menus. The player walks around inside the Atelier and Home freely.
 - 2026-10-19: **Moving between places never uses time.** Time only advances from specific actions (e.g. finishing boutique hours), decided later.
 
@@ -199,18 +202,22 @@ Output: a score (0–100) mapped to a reaction tier, plus money, reputation and 
 
 ## 7. Technical design (Godot 4.7, GDScript)
 
-### 2D now, 3D later (decided 2026-10-19)
+### How the 3D world works
 
-The first slice is 2D. Menus, data, scoring, calendar and save/load will carry over to 3D unchanged; only the walkable world scenes (map, player movement, camera) get rebuilt in 3D later.
+Units are meters. Every object's origin is on the ground; "front" faces +Z.
 
-### How the walkable world works
-
-- `scenes/main.tscn` (`scripts/main.gd`) owns the single Player and the HUD. `travel_to(scene_path, spawn_name)` fades out, swaps the location, puts the player at a spawn point, and fades in.
-- Every place (street or interior) is a **Location** (`scripts/world/location.gd`) with `location_name`, `bounds` (camera limits + invisible edge walls), an `Entities` node (Y Sort on; the player goes here), and a `Spawns` node of Marker2D points.
-- **Prop** (`scenes/world/prop.tscn`) is any solid block: building, wall, furniture. Origin = bottom-center. `size`, `color`, `display_name`, `has_door`, and `footprint` (collision depth, so tall thin things can be walked behind).
-- **Door** (`scenes/world/door.tscn`) is an interaction zone: `prompt_text`, `target_scene` (empty = "Closed for now"), `target_spawn`. Doors find Main through the `"main"` group.
-- Controls (Project Settings → Input Map): `move_left/right/up/down` (WASD, arrows, left stick), `interact` (E, Enter, gamepad A).
-- To add a building: put a Prop under the street's `Entities`, a Door under `Doors` just below it, and (if enterable) a new interior scene plus a spawn Marker2D outside the door.
+- `scenes/main.tscn` (`scripts/main.gd`) owns the single Player, the HUD and the door prompt. `travel_to(scene_path, spawn_name)` fades out, swaps the location, puts the player on a spawn point, and fades in.
+- Every place is a **Location** (`scripts/world/location.gd`): `location_name`, `walk_area` (x/z rectangle with invisible walls around it), and a `Spawns` node of Marker3D points (the player faces the marker's -Z).
+- Each location instances `scenes/world/golden_hour.tscn` (sun + `golden_hour_environment.tres`: sky, fog, glow, tone mapping). Change the mood in one place.
+- **Player** (`scenes/world/player.tscn`): CharacterBody3D, walks relative to the camera, Shift runs, little bounce while walking. Camera = `CameraPivot/SpringArm3D/Camera3D` (spring arm keeps the camera from going through walls). Art: `Visual/ChibiPlaceholder` (colors are editable in the Inspector).
+- Generated placeholder kits. Change settings in the Inspector and they rebuild live in the editor:
+  - **Building** (`scenes/world/building.tscn`): `style` (CAST_IRON / BROWNSTONE / LIMESTONE), `width`, `depth`, `floors`, colors, `storefront` (off = stoop + raised door), awning (+ stripes), sign text, fire escape, water tower.
+  - **Decor** (`scenes/world/decor.tscn`): `kind` = lamp post, street tree, hydrant, bench, taxi, planter, crosswalk, clothing rack, mannequin, potted plant, pendant light, mirror.
+  - **Block** (`scenes/world/block.tscn`): any plain box (floors, walls, sidewalks, furniture); `top_color` for a trim slab, `solid` off for rugs.
+  - All three share `scripts/world/mesh_kit.gd` (shape + material helpers). Generated meshes/collision are internal nodes: not shown in the Scene dock and not saved in the .tscn.
+- **Door** (`scenes/world/door.tscn`): Area3D zone in front of a doorway: `prompt_text`, `target_scene` (empty = "Closed for now"), `target_spawn`.
+- Controls (Project Settings → Input Map): `move_*` (WASD, arrows, left stick), `run` (Shift, gamepad B), `interact` (E, Enter, gamepad A), `camera_*` (right stick). Mouse look is handled in `player.gd`.
+- To add a shop: add a Building under `NorthRow`/`SouthRow`, a Door under `Doors` in front of it, and (if enterable) an interior scene + a Marker3D spawn outside the door.
 
 ### Placeholder art and swapping in real models
 
@@ -218,8 +225,8 @@ The rule that keeps art swaps from breaking code: **game scripts never talk to t
 
 - Every world object (the player, a client, a building, a mannequin) is its own scene, e.g. `scenes/world/client.tscn`.
 - The root node holds the script and the gameplay pieces (collision shape, interaction area). The art lives in a single child node named `Visual`.
-- Placeholder: `Visual` is a capsule/box mesh (3D) or a colored rectangle/`Sprite2D` (2D).
-- Real art later: delete the placeholder under `Visual` and drop in the imported model (`.glb` exported from Blender, or a free CC0 asset) or the new sprite. Scripts, collisions and signals are untouched.
+- Placeholder: Buildings, Decor and Blocks generate their shapes automatically while `Visual` is empty. The player has a `ChibiPlaceholder` node inside `Visual`.
+- Real art later: drop the imported model (`.glb` from Blender, a VRoid character, or a free CC0 asset) under `Visual`. Generated placeholders disappear by themselves; for the player, delete `ChibiPlaceholder`. Scripts, collisions and signals are untouched.
 - If a model needs animation, the script calls a small helper (e.g. `play_anim("walk")`) on the `Visual` scene, so the script doesn't care which model is inside.
 - Clothing items reference their art by path in their data file (e.g. `model = "res://assets/models/items/silk_blouse.glb"`). Swapping art = changing a path in data, not code.
 
@@ -256,9 +263,9 @@ assets/
 ## 8. Roadmap
 
 1. Project setup + public GitHub repo (done 2026-10-19)
-2. Decide 2D vs. 3D for the first slice (done: 2D)
-3. First playable slice: side street, walkable Atelier and Home, doors with fades (done 2026-10-19)
-4. Restyle to match Julia's mood board
+2. Decide 2D vs. 3D (done: 3D)
+3. First playable slice: side street, walkable Atelier and Home, doors with fades (done 2026-10-19, rebuilt in 3D the same day)
+4. Refine the look with Julia's mood board
 5. Core loop inside the atelier: one client → brief → style → score → reward
 6. Data-driven items and clients (at least 30 items, 8 clients)
 7. Clear, specific client feedback

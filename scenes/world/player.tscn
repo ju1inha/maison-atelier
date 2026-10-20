@@ -1,21 +1,33 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/world/player.gd" id="1_player"]
+[ext_resource type="Script" path="res://scripts/world/chibi_placeholder.gd" id="2_chibi"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_feet"]
-radius = 12.0
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.3
+height = 1.4
 
-[node name="Player" type="CharacterBody2D" groups=["player"]]
-motion_mode = 1
+[sub_resource type="SphereShape3D" id="SphereShape3D_camera"]
+radius = 0.2
+
+[node name="Player" type="CharacterBody3D" groups=["player"]]
 script = ExtResource("1_player")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -6)
-shape = SubResource("CircleShape2D_feet")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.7, 0)
+shape = SubResource("CapsuleShape3D_body")
 
-[node name="Visual" type="Node2D" parent="."]
+[node name="Visual" type="Node3D" parent="."]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(0, -30)
-position_smoothing_enabled = true
-position_smoothing_speed = 6.0
+[node name="ChibiPlaceholder" type="Node3D" parent="Visual"]
+script = ExtResource("2_chibi")
+
+[node name="CameraPivot" type="Node3D" parent="."]
+position = Vector3(0, 1, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot"]
+shape = SubResource("SphereShape3D_camera")
+spring_length = 5.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D"]
+fov = 60.0

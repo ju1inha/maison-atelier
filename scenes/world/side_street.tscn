@@ -1,156 +1,408 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/world/location.gd" id="1_location"]
-[ext_resource type="PackedScene" path="res://scenes/world/prop.tscn" id="2_prop"]
-[ext_resource type="PackedScene" path="res://scenes/world/door.tscn" id="3_door"]
+[ext_resource type="PackedScene" path="res://scenes/world/building.tscn" id="2_building"]
+[ext_resource type="PackedScene" path="res://scenes/world/decor.tscn" id="3_decor"]
+[ext_resource type="PackedScene" path="res://scenes/world/block.tscn" id="4_block"]
+[ext_resource type="PackedScene" path="res://scenes/world/door.tscn" id="5_door"]
+[ext_resource type="PackedScene" path="res://scenes/world/golden_hour.tscn" id="6_light"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_back"]
-size = Vector2(2400, 440)
-
-[node name="SideStreet" type="Node2D"]
+[node name="SideStreet" type="Node3D"]
 script = ExtResource("1_location")
 location_name = "Side Street"
-bounds = Rect2(0, 0, 2400, 1000)
+walk_area = Rect2(-40, -1, 80, 22)
 
-[node name="Ground" type="Node2D" parent="."]
+[node name="GoldenHour" parent="." instance=ExtResource("6_light")]
 
-[node name="Backdrop" type="ColorRect" parent="Ground"]
-offset_right = 2400.0
-offset_bottom = 440.0
-mouse_filter = 2
-color = Color(0.81, 0.769, 0.69, 1)
+[node name="Ground" type="Node3D" parent="."]
 
-[node name="Pavement" type="ColorRect" parent="Ground"]
-offset_top = 440.0
-offset_right = 2400.0
-offset_bottom = 680.0
-mouse_filter = 2
-color = Color(0.851, 0.816, 0.757, 1)
+[node name="Base" parent="Ground" instance=ExtResource("4_block")]
+position = Vector3(0, -0.13, 10)
+size = Vector3(300, 0.1, 300)
+color = Color(0.18, 0.17, 0.165, 1)
 
-[node name="Curb" type="ColorRect" parent="Ground"]
-offset_top = 676.0
-offset_right = 2400.0
-offset_bottom = 680.0
-mouse_filter = 2
-color = Color(0.788, 0.663, 0.431, 1)
+[node name="Road" parent="Ground" instance=ExtResource("4_block")]
+position = Vector3(0, -0.1, 10)
+size = Vector3(100, 0.1, 10)
+color = Color(0.23, 0.22, 0.215, 1)
 
-[node name="Cobblestones" type="ColorRect" parent="Ground"]
-offset_top = 680.0
-offset_right = 2400.0
-offset_bottom = 1000.0
-mouse_filter = 2
-color = Color(0.702, 0.659, 0.596, 1)
+[node name="NorthSidewalk" parent="Ground" instance=ExtResource("4_block")]
+position = Vector3(0, -0.1, 2.5)
+size = Vector3(100, 0.16, 5)
+color = Color(0.83, 0.78, 0.71, 1)
 
-[node name="BackWall" type="StaticBody2D" parent="."]
+[node name="NorthCurb" parent="Ground" instance=ExtResource("4_block")]
+position = Vector3(0, -0.1, 4.9)
+size = Vector3(100, 0.17, 0.25)
+color = Color(0.66, 0.63, 0.59, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BackWall"]
-position = Vector2(1200, 220)
-shape = SubResource("RectangleShape2D_back")
+[node name="SouthSidewalk" parent="Ground" instance=ExtResource("4_block")]
+position = Vector3(0, -0.1, 17.5)
+size = Vector3(100, 0.16, 5)
+color = Color(0.83, 0.78, 0.71, 1)
 
-[node name="Doors" type="Node2D" parent="."]
+[node name="SouthCurb" parent="Ground" instance=ExtResource("4_block")]
+position = Vector3(0, -0.1, 15.1)
+size = Vector3(100, 0.17, 0.25)
+color = Color(0.66, 0.63, 0.59, 1)
 
-[node name="HomeDoor" parent="Doors" instance=ExtResource("3_door")]
-position = Vector2(300, 545)
+[node name="CenterLine1" parent="Ground" instance=ExtResource("4_block")]
+position = Vector3(0, 0, 9.88)
+size = Vector3(100, 0.006, 0.12)
+color = Color(0.85, 0.7, 0.24, 1)
+solid = false
+
+[node name="CenterLine2" parent="Ground" instance=ExtResource("4_block")]
+position = Vector3(0, 0, 10.12)
+size = Vector3(100, 0.006, 0.12)
+color = Color(0.85, 0.7, 0.24, 1)
+solid = false
+
+[node name="CrosswalkWest" parent="Ground" instance=ExtResource("3_decor")]
+position = Vector3(-38, 0, 10)
+kind = 6
+
+[node name="CrosswalkEast" parent="Ground" instance=ExtResource("3_decor")]
+position = Vector3(38, 0, 10)
+kind = 6
+
+[node name="NorthRow" type="Node3D" parent="."]
+
+[node name="CornerLoft" parent="NorthRow" instance=ExtResource("2_building")]
+position = Vector3(-38, 0, 0)
+width = 10.0
+depth = 14.0
+floors = 5
+facade_color = Color(0.6, 0.65, 0.57, 1)
+trim_color = Color(0.92, 0.9, 0.85, 1)
+awning_color = Color(0.18, 0.29, 0.23, 1)
+
+[node name="Home" parent="NorthRow" instance=ExtResource("2_building")]
+position = Vector3(-29, 0, 0)
+display_name = "Home"
+style = 1
+width = 8.0
+floors = 4
+facade_color = Color(0.45, 0.29, 0.23, 1)
+trim_color = Color(0.37, 0.23, 0.18, 1)
+storefront = false
+has_awning = false
+
+[node name="Atelier" parent="NorthRow" instance=ExtResource("2_building")]
+position = Vector3(-19, 0, 0)
+display_name = "Atelier"
+width = 12.0
+depth = 14.0
+floors = 5
+facade_color = Color(0.93, 0.9, 0.85, 1)
+trim_color = Color(0.85, 0.8, 0.72, 1)
+awning_color = Color(0.08, 0.07, 0.07, 1)
+sign_color = Color(0.1, 0.09, 0.09, 1)
+
+[node name="Brownstone2" parent="NorthRow" instance=ExtResource("2_building")]
+position = Vector3(-9.5, 0, 0)
+style = 1
+width = 7.0
+floors = 4
+facade_color = Color(0.5, 0.33, 0.26, 1)
+trim_color = Color(0.4, 0.26, 0.2, 1)
+storefront = false
+has_awning = false
+
+[node name="Cafe" parent="NorthRow" instance=ExtResource("2_building")]
+position = Vector3(-2, 0, 0)
+display_name = "Café"
+style = 2
+width = 8.0
+floors = 4
+facade_color = Color(0.87, 0.74, 0.7, 1)
+trim_color = Color(0.96, 0.93, 0.9, 1)
+awning_color = Color(0.37, 0.1, 0.11, 1)
+striped_awning = true
+
+[node name="Showroom" parent="NorthRow" instance=ExtResource("2_building")]
+position = Vector3(7.5, 0, 0)
+display_name = "Showroom"
+width = 11.0
+depth = 14.0
+floors = 6
+facade_color = Color(0.29, 0.29, 0.31, 1)
+trim_color = Color(0.22, 0.22, 0.24, 1)
+has_awning = false
+fire_escape = true
+water_tower = true
+
+[node name="Gallery" parent="NorthRow" instance=ExtResource("2_building")]
+position = Vector3(18, 0, 0)
+display_name = "Gallery"
+style = 2
+width = 10.0
+floors = 4
+facade_color = Color(0.96, 0.95, 0.93, 1)
+trim_color = Color(0.88, 0.86, 0.82, 1)
+has_awning = false
+sign_color = Color(0.1, 0.1, 0.1, 1)
+
+[node name="RedLoft" parent="NorthRow" instance=ExtResource("2_building")]
+position = Vector3(28, 0, 0)
+width = 10.0
+floors = 5
+facade_color = Color(0.6, 0.3, 0.25, 1)
+trim_color = Color(0.9, 0.87, 0.8, 1)
+awning_color = Color(0.12, 0.16, 0.28, 1)
+fire_escape = true
+
+[node name="Brownstone3" parent="NorthRow" instance=ExtResource("2_building")]
+position = Vector3(37.5, 0, 0)
+style = 1
+width = 9.0
+floors = 4
+facade_color = Color(0.42, 0.27, 0.22, 1)
+trim_color = Color(0.34, 0.21, 0.17, 1)
+storefront = false
+has_awning = false
+water_tower = true
+
+[node name="SouthRow" type="Node3D" parent="."]
+
+[node name="South1" parent="SouthRow" instance=ExtResource("2_building")]
+position = Vector3(-37, 0, 20)
+rotation_degrees = Vector3(0, 180, 0)
+width = 12.0
+floors = 6
+facade_color = Color(0.93, 0.9, 0.85, 1)
+trim_color = Color(0.85, 0.8, 0.72, 1)
+awning_color = Color(0.12, 0.16, 0.28, 1)
+water_tower = true
+
+[node name="South2" parent="SouthRow" instance=ExtResource("2_building")]
+position = Vector3(-26, 0, 20)
+rotation_degrees = Vector3(0, 180, 0)
+style = 1
+width = 10.0
+facade_color = Color(0.47, 0.3, 0.24, 1)
+trim_color = Color(0.38, 0.24, 0.19, 1)
+storefront = false
+has_awning = false
+
+[node name="South3" parent="SouthRow" instance=ExtResource("2_building")]
+position = Vector3(-16, 0, 20)
+rotation_degrees = Vector3(0, 180, 0)
+style = 2
+width = 10.0
+floors = 5
+facade_color = Color(0.86, 0.82, 0.75, 1)
+trim_color = Color(0.95, 0.93, 0.89, 1)
+awning_color = Color(0.18, 0.29, 0.23, 1)
+striped_awning = true
+
+[node name="South4" parent="SouthRow" instance=ExtResource("2_building")]
+position = Vector3(-5.5, 0, 20)
+rotation_degrees = Vector3(0, 180, 0)
+width = 11.0
+floors = 6
+facade_color = Color(0.29, 0.29, 0.31, 1)
+trim_color = Color(0.22, 0.22, 0.24, 1)
+awning_color = Color(0.37, 0.1, 0.11, 1)
+fire_escape = true
+
+[node name="South5" parent="SouthRow" instance=ExtResource("2_building")]
+position = Vector3(5, 0, 20)
+rotation_degrees = Vector3(0, 180, 0)
+style = 1
+width = 10.0
+facade_color = Color(0.5, 0.33, 0.26, 1)
+trim_color = Color(0.4, 0.26, 0.2, 1)
+storefront = false
+has_awning = false
+
+[node name="South6" parent="SouthRow" instance=ExtResource("2_building")]
+position = Vector3(15.5, 0, 20)
+rotation_degrees = Vector3(0, 180, 0)
+style = 2
+width = 11.0
+floors = 5
+facade_color = Color(0.87, 0.74, 0.7, 1)
+trim_color = Color(0.96, 0.93, 0.9, 1)
+
+[node name="South7" parent="SouthRow" instance=ExtResource("2_building")]
+position = Vector3(26, 0, 20)
+rotation_degrees = Vector3(0, 180, 0)
+width = 10.0
+floors = 5
+facade_color = Color(0.6, 0.65, 0.57, 1)
+trim_color = Color(0.92, 0.9, 0.85, 1)
+awning_color = Color(0.08, 0.07, 0.07, 1)
+fire_escape = true
+
+[node name="South8" parent="SouthRow" instance=ExtResource("2_building")]
+position = Vector3(36.5, 0, 20)
+rotation_degrees = Vector3(0, 180, 0)
+style = 1
+width = 11.0
+facade_color = Color(0.42, 0.27, 0.22, 1)
+trim_color = Color(0.34, 0.21, 0.17, 1)
+storefront = false
+has_awning = false
+
+[node name="StreetDecor" type="Node3D" parent="."]
+
+[node name="Tree1" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(-35, 0, 4)
+kind = 1
+
+[node name="Tree2" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(-24, 0, 4)
+kind = 1
+
+[node name="Tree3" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(-10, 0, 4)
+kind = 1
+
+[node name="Tree4" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(4, 0, 4)
+kind = 1
+
+[node name="Tree5" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(14, 0, 4)
+kind = 1
+
+[node name="Tree6" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(26, 0, 4)
+kind = 1
+
+[node name="Tree7" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(36, 0, 4)
+kind = 1
+
+[node name="Tree8" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(-32, 0, 16)
+kind = 1
+
+[node name="Tree9" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(-20, 0, 16)
+kind = 1
+
+[node name="Tree10" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(-8, 0, 16)
+kind = 1
+
+[node name="Tree11" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(4, 0, 16)
+kind = 1
+
+[node name="Tree12" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(16, 0, 16)
+kind = 1
+
+[node name="Tree13" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(28, 0, 16)
+kind = 1
+
+[node name="Lamp1" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(-33, 0, 4.4)
+
+[node name="Lamp2" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(-14, 0, 4.4)
+
+[node name="Lamp3" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(1, 0, 4.4)
+
+[node name="Lamp4" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(12.5, 0, 4.4)
+
+[node name="Lamp5" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(23, 0, 4.4)
+
+[node name="Lamp6" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(33, 0, 4.4)
+
+[node name="Lamp7" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(-26, 0, 15.6)
+
+[node name="Lamp8" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(-2, 0, 15.6)
+
+[node name="Lamp9" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(22, 0, 15.6)
+
+[node name="Bench1" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(-6.5, 0, 3.8)
+rotation_degrees = Vector3(0, 180, 0)
+kind = 3
+
+[node name="Bench2" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(10, 0, 16.4)
+kind = 3
+
+[node name="Hydrant1" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(-12, 0, 4.4)
+kind = 2
+
+[node name="Hydrant2" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(20, 0, 15.6)
+kind = 2
+
+[node name="PlanterAtelierL" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(-21.4, 0, 0.5)
+kind = 5
+color = Color(0.94, 0.9, 0.84, 1)
+
+[node name="PlanterAtelierR" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(-16.6, 0, 0.5)
+kind = 5
+color = Color(0.94, 0.9, 0.84, 1)
+
+[node name="PlanterCafe" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(-4.5, 0, 0.5)
+kind = 5
+color = Color(0.91, 0.6, 0.62, 1)
+
+[node name="PlanterGallery" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(20.5, 0, 0.5)
+kind = 5
+color = Color(0.37, 0.1, 0.11, 1)
+
+[node name="Taxi1" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(-8, 0, 6.2)
+kind = 4
+
+[node name="Taxi2" parent="StreetDecor" instance=ExtResource("3_decor")]
+position = Vector3(21, 0, 13.8)
+rotation_degrees = Vector3(0, 180, 0)
+kind = 4
+
+[node name="Doors" type="Node3D" parent="."]
+
+[node name="HomeDoor" parent="Doors" instance=ExtResource("5_door")]
+position = Vector3(-29, 0, 2.6)
 prompt_text = "Go home"
 target_scene = "res://scenes/interiors/home_interior.tscn"
 
-[node name="AtelierDoor" parent="Doors" instance=ExtResource("3_door")]
-position = Vector2(820, 545)
+[node name="AtelierDoor" parent="Doors" instance=ExtResource("5_door")]
+position = Vector3(-19, 0, 1)
 prompt_text = "Enter the Atelier"
 target_scene = "res://scenes/interiors/atelier_interior.tscn"
 
-[node name="CafeDoor" parent="Doors" instance=ExtResource("3_door")]
-position = Vector2(1360, 545)
+[node name="CafeDoor" parent="Doors" instance=ExtResource("5_door")]
+position = Vector3(-2, 0, 1)
 prompt_text = "Visit the Café"
 
-[node name="ShowroomDoor" parent="Doors" instance=ExtResource("3_door")]
-position = Vector2(1800, 545)
+[node name="ShowroomDoor" parent="Doors" instance=ExtResource("5_door")]
+position = Vector3(7.5, 0, 1)
 prompt_text = "Visit the Showroom"
 
-[node name="GalleryDoor" parent="Doors" instance=ExtResource("3_door")]
-position = Vector2(2200, 545)
+[node name="GalleryDoor" parent="Doors" instance=ExtResource("5_door")]
+position = Vector3(18, 0, 1)
 prompt_text = "Visit the Gallery"
 
-[node name="Entities" type="Node2D" parent="."]
-y_sort_enabled = true
+[node name="Spawns" type="Node3D" parent="."]
 
-[node name="Home" parent="Entities" instance=ExtResource("2_prop")]
-position = Vector2(300, 520)
-display_name = "Home"
-size = Vector2(280, 320)
-color = Color(0.91, 0.863, 0.784, 1)
-label_color = Color(0.078, 0.071, 0.067, 1)
-has_door = true
+[node name="Start" type="Marker3D" parent="Spawns"]
+position = Vector3(-19, 0, 9)
 
-[node name="Atelier" parent="Entities" instance=ExtResource("2_prop")]
-position = Vector2(820, 520)
-display_name = "Atelier"
-size = Vector2(440, 420)
-color = Color(0.118, 0.102, 0.094, 1)
-has_door = true
+[node name="AtelierDoor" type="Marker3D" parent="Spawns"]
+position = Vector3(-19, 0.1, 3)
 
-[node name="Cafe" parent="Entities" instance=ExtResource("2_prop")]
-position = Vector2(1360, 520)
-display_name = "Café"
-size = Vector2(320, 300)
-color = Color(0.369, 0.102, 0.114, 1)
-has_door = true
-
-[node name="Showroom" parent="Entities" instance=ExtResource("2_prop")]
-position = Vector2(1800, 520)
-display_name = "Showroom"
-size = Vector2(360, 360)
-color = Color(0.839, 0.776, 0.659, 1)
-label_color = Color(0.078, 0.071, 0.067, 1)
-has_door = true
-
-[node name="Gallery" parent="Entities" instance=ExtResource("2_prop")]
-position = Vector2(2200, 520)
-display_name = "Gallery"
-size = Vector2(300, 340)
-color = Color(0.969, 0.957, 0.933, 1)
-label_color = Color(0.078, 0.071, 0.067, 1)
-has_door = true
-
-[node name="LampPost1" parent="Entities" instance=ExtResource("2_prop")]
-position = Vector2(560, 640)
-size = Vector2(14, 110)
-footprint = 14.0
-
-[node name="LampPost2" parent="Entities" instance=ExtResource("2_prop")]
-position = Vector2(1090, 640)
-size = Vector2(14, 110)
-footprint = 14.0
-
-[node name="LampPost3" parent="Entities" instance=ExtResource("2_prop")]
-position = Vector2(1580, 640)
-size = Vector2(14, 110)
-footprint = 14.0
-
-[node name="LampPost4" parent="Entities" instance=ExtResource("2_prop")]
-position = Vector2(2010, 640)
-size = Vector2(14, 110)
-footprint = 14.0
-
-[node name="Planter1" parent="Entities" instance=ExtResource("2_prop")]
-position = Vector2(660, 880)
-size = Vector2(120, 50)
-color = Color(0.29, 0.353, 0.271, 1)
-footprint = 30.0
-
-[node name="Planter2" parent="Entities" instance=ExtResource("2_prop")]
-position = Vector2(1500, 900)
-size = Vector2(120, 50)
-color = Color(0.29, 0.353, 0.271, 1)
-footprint = 30.0
-
-[node name="Spawns" type="Node2D" parent="."]
-
-[node name="Start" type="Marker2D" parent="Spawns"]
-position = Vector2(820, 760)
-
-[node name="HomeDoor" type="Marker2D" parent="Spawns"]
-position = Vector2(300, 605)
-
-[node name="AtelierDoor" type="Marker2D" parent="Spawns"]
-position = Vector2(820, 605)
+[node name="HomeDoor" type="Marker3D" parent="Spawns"]
+position = Vector3(-29, 0.1, 4.4)

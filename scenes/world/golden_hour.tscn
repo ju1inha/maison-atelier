@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="Environment" path="res://scenes/world/golden_hour_environment.tres" id="1_env"]
+
+[node name="GoldenHour" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("1_env")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-32, 35, 0)
+light_color = Color(1, 0.86, 0.7, 1)
+light_energy = 2.0
+shadow_enabled = true
+directional_shadow_max_distance = 70.0

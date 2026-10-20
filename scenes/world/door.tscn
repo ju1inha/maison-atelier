@@ -2,24 +2,12 @@
 
 [ext_resource type="Script" path="res://scripts/world/door.gd" id="1_door"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_zone"]
-size = Vector2(96, 50)
+[sub_resource type="BoxShape3D" id="BoxShape3D_zone"]
+size = Vector3(2.4, 2.5, 2)
 
-[node name="Door" type="Area2D"]
+[node name="Door" type="Area3D"]
 script = ExtResource("1_door")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_zone")
-
-[node name="Prompt" type="Label" parent="."]
-z_index = 10
-offset_left = -160.0
-offset_top = 34.0
-offset_right = 160.0
-offset_bottom = 62.0
-theme_override_colors/font_color = Color(0.961, 0.937, 0.89, 1)
-theme_override_colors/font_outline_color = Color(0.078, 0.071, 0.067, 1)
-theme_override_constants/outline_size = 6
-theme_override_font_sizes/font_size = 18
-text = "[E]  Enter"
-horizontal_alignment = 1
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 1.25, 0)
+shape = SubResource("BoxShape3D_zone")
