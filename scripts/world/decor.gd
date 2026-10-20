@@ -12,8 +12,8 @@ enum Kind {
 
 const IRON := Color("1f1f1f")
 const BRASS := Color("c9a96e")
-const LEAF := Color("5e7a4a")
-const LEAF_LIGHT := Color("7a9658")
+const LEAF := Color("7fa36a")
+const LEAF_LIGHT := Color("9cc184")
 ## Garment colors used on clothing racks.
 const GARMENTS := [Color("f3ede2"), Color("1a1a1a"), Color("5e1a1d"), Color("c4a27a"), Color("2f4a3a"), Color("e8c4bd")]
 
@@ -121,25 +121,11 @@ func _bench(p: Node3D) -> void:
 
 
 func _taxi(p: Node3D) -> void:
-	var yellow := Color("f2c230")
-	var glass := Color("2b3440")
-	MeshKit.box(p, Vector3(4.2, 0.65, 1.8), Vector3(0, 0.6, 0), yellow)
-	MeshKit.box(p, Vector3(2.2, 0.55, 1.6), Vector3(-0.2, 1.2, 0), yellow)
-	MeshKit.box(p, Vector3(2.0, 0.42, 1.64), Vector3(-0.2, 1.2, 0), glass)  # side windows
-	MeshKit.box(p, Vector3(0.6, 0.18, 0.18), Vector3(-0.2, 1.56, 0), Color("f3ede2"))  # roof light
-	MeshKit.box(p, Vector3(0.1, 0.18, 1.6), Vector3(2.12, 0.55, 0), Color("cfcfcf"))  # bumpers
-	MeshKit.box(p, Vector3(0.1, 0.18, 1.6), Vector3(-2.12, 0.55, 0), Color("cfcfcf"))
-	MeshKit.box(p, Vector3(0.05, 0.12, 0.3), Vector3(2.15, 0.75, 0.6), Color("fff2c8"), Vector3.ZERO, 1.5)  # headlights
-	MeshKit.box(p, Vector3(0.05, 0.12, 0.3), Vector3(2.15, 0.75, -0.6), Color("fff2c8"), Vector3.ZERO, 1.5)
-	MeshKit.box(p, Vector3(4.0, 0.05, 0.02), Vector3(0, 0.75, 0.91), Color("1a1a1a"))  # checker stripe
-	MeshKit.box(p, Vector3(4.0, 0.05, 0.02), Vector3(0, 0.75, -0.91), Color("1a1a1a"))
-	for x in [-1.3, 1.3]:
-		for z in [-0.85, 0.85]:
-			MeshKit.cylinder(p, 0.33, 0.33, 0.25, Vector3(x, 0.33, z), Color("151515"), Vector3(90, 0, 0))
+	Vehicle.build_car(p, Vehicle.TAXI_YELLOW, true)  # same look as the moving cars
 
 
 func _planter(p: Node3D) -> void:
-	MeshKit.box(p, Vector3(1.2, 0.5, 0.5), Vector3(0, 0.25, 0), Color("2b2b2b"))
+	MeshKit.box(p, Vector3(1.2, 0.5, 0.5), Vector3(0, 0.25, 0), Color("f3ede2"))
 	MeshKit.box(p, Vector3(1.1, 0.25, 0.4), Vector3(0, 0.6, 0), LEAF)
 	for i in 4:  # little flowers
 		MeshKit.sphere(p, 0.09, Vector3(-0.4 + i * 0.27, 0.78, 0.05 * (i % 2)), color)

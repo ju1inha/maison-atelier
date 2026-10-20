@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/pedestrian.gd" id="1_pedestrian"]
+[ext_resource type="Script" path="res://scripts/world/anime_placeholder.gd" id="2_anime"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_person"]
+radius = 0.25
+height = 1.7
+
+[node name="Pedestrian" type="AnimatableBody3D"]
+collision_layer = 2
+collision_mask = 0
+sync_to_physics = false
+script = ExtResource("1_pedestrian")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.85, 0)
+shape = SubResource("CapsuleShape3D_person")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="AnimePlaceholder" type="Node3D" parent="Visual"]
+script = ExtResource("2_anime")

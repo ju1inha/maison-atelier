@@ -1,29 +1,34 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/world/player.gd" id="1_player"]
-[ext_resource type="Script" path="res://scripts/world/chibi_placeholder.gd" id="2_chibi"]
+[ext_resource type="Script" path="res://scripts/world/anime_placeholder.gd" id="2_anime"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.3
-height = 1.4
+height = 1.75
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_camera"]
 radius = 0.2
 
 [node name="Player" type="CharacterBody3D" groups=["player"]]
+collision_mask = 3
 script = ExtResource("1_player")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-position = Vector3(0, 0.7, 0)
+position = Vector3(0, 0.875, 0)
 shape = SubResource("CapsuleShape3D_body")
 
 [node name="Visual" type="Node3D" parent="."]
 
-[node name="ChibiPlaceholder" type="Node3D" parent="Visual"]
-script = ExtResource("2_chibi")
+[node name="AnimePlaceholder" type="Node3D" parent="Visual"]
+script = ExtResource("2_anime")
+hair_style = 0
+hair_color = Color(0.35, 0.23, 0.17, 1)
+top_color = Color(0.95, 0.72, 0.78, 1)
+bottom_color = Color(0.95, 0.93, 0.89, 1)
 
 [node name="CameraPivot" type="Node3D" parent="."]
-position = Vector3(0, 1, 0)
+position = Vector3(0, 1.4, 0)
 
 [node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot"]
 shape = SubResource("SphereShape3D_camera")

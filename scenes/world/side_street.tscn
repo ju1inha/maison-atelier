@@ -1,11 +1,20 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/world/location.gd" id="1_location"]
+
 [ext_resource type="PackedScene" path="res://scenes/world/building.tscn" id="2_building"]
+
 [ext_resource type="PackedScene" path="res://scenes/world/decor.tscn" id="3_decor"]
+
 [ext_resource type="PackedScene" path="res://scenes/world/block.tscn" id="4_block"]
+
 [ext_resource type="PackedScene" path="res://scenes/world/door.tscn" id="5_door"]
+
 [ext_resource type="PackedScene" path="res://scenes/world/golden_hour.tscn" id="6_light"]
+[ext_resource type="Script" path="res://scripts/world/city_backdrop.gd" id="7_backdrop"]
+[ext_resource type="Script" path="res://scripts/world/lane_traffic.gd" id="8_traffic"]
+[ext_resource type="PackedScene" path="res://scenes/world/car.tscn" id="9_car"]
+[ext_resource type="PackedScene" path="res://scenes/world/pedestrian.tscn" id="10_pedestrian"]
 
 [node name="SideStreet" type="Node3D"]
 script = ExtResource("1_location")
@@ -18,44 +27,44 @@ walk_area = Rect2(-40, -1, 80, 22)
 
 [node name="Base" parent="Ground" instance=ExtResource("4_block")]
 position = Vector3(0, -0.13, 10)
-size = Vector3(300, 0.1, 300)
-color = Color(0.18, 0.17, 0.165, 1)
+size = Vector3(560, 0.1, 560)
+color = Color(0.55, 0.52, 0.52, 1)
 
 [node name="Road" parent="Ground" instance=ExtResource("4_block")]
 position = Vector3(0, -0.1, 10)
 size = Vector3(100, 0.1, 10)
-color = Color(0.23, 0.22, 0.215, 1)
+color = Color(0.44, 0.42, 0.43, 1)
 
 [node name="NorthSidewalk" parent="Ground" instance=ExtResource("4_block")]
 position = Vector3(0, -0.1, 2.5)
-size = Vector3(100, 0.16, 5)
-color = Color(0.83, 0.78, 0.71, 1)
+size = Vector3(84, 0.16, 5)
+color = Color(0.93, 0.89, 0.84, 1)
 
 [node name="NorthCurb" parent="Ground" instance=ExtResource("4_block")]
 position = Vector3(0, -0.1, 4.9)
-size = Vector3(100, 0.17, 0.25)
-color = Color(0.66, 0.63, 0.59, 1)
+size = Vector3(84, 0.17, 0.25)
+color = Color(0.82, 0.78, 0.74, 1)
 
 [node name="SouthSidewalk" parent="Ground" instance=ExtResource("4_block")]
 position = Vector3(0, -0.1, 17.5)
-size = Vector3(100, 0.16, 5)
-color = Color(0.83, 0.78, 0.71, 1)
+size = Vector3(84, 0.16, 5)
+color = Color(0.93, 0.89, 0.84, 1)
 
 [node name="SouthCurb" parent="Ground" instance=ExtResource("4_block")]
 position = Vector3(0, -0.1, 15.1)
-size = Vector3(100, 0.17, 0.25)
-color = Color(0.66, 0.63, 0.59, 1)
+size = Vector3(84, 0.17, 0.25)
+color = Color(0.82, 0.78, 0.74, 1)
 
 [node name="CenterLine1" parent="Ground" instance=ExtResource("4_block")]
 position = Vector3(0, 0, 9.88)
-size = Vector3(100, 0.006, 0.12)
-color = Color(0.85, 0.7, 0.24, 1)
+size = Vector3(84, 0.006, 0.12)
+color = Color(0.95, 0.82, 0.45, 1)
 solid = false
 
 [node name="CenterLine2" parent="Ground" instance=ExtResource("4_block")]
 position = Vector3(0, 0, 10.12)
-size = Vector3(100, 0.006, 0.12)
-color = Color(0.85, 0.7, 0.24, 1)
+size = Vector3(84, 0.006, 0.12)
+color = Color(0.95, 0.82, 0.45, 1)
 solid = false
 
 [node name="CrosswalkWest" parent="Ground" instance=ExtResource("3_decor")]
@@ -66,6 +75,26 @@ kind = 6
 position = Vector3(38, 0, 10)
 kind = 6
 
+[node name="AvenueWest" parent="Ground" instance=ExtResource("4_block")]
+position = Vector3(-46, -0.1, 10)
+size = Vector3(8, 0.1, 140)
+color = Color(0.44, 0.42, 0.43, 1)
+
+[node name="AvenueEast" parent="Ground" instance=ExtResource("4_block")]
+position = Vector3(46, -0.1, 10)
+size = Vector3(8, 0.1, 140)
+color = Color(0.44, 0.42, 0.43, 1)
+
+[node name="AvenueSidewalkWest" parent="Ground" instance=ExtResource("4_block")]
+position = Vector3(-51, -0.1, 10)
+size = Vector3(2, 0.16, 140)
+color = Color(0.93, 0.89, 0.84, 1)
+
+[node name="AvenueSidewalkEast" parent="Ground" instance=ExtResource("4_block")]
+position = Vector3(51, -0.1, 10)
+size = Vector3(2, 0.16, 140)
+color = Color(0.93, 0.89, 0.84, 1)
+
 [node name="NorthRow" type="Node3D" parent="."]
 
 [node name="CornerLoft" parent="NorthRow" instance=ExtResource("2_building")]
@@ -73,9 +102,10 @@ position = Vector3(-38, 0, 0)
 width = 10.0
 depth = 14.0
 floors = 5
-facade_color = Color(0.6, 0.65, 0.57, 1)
-trim_color = Color(0.92, 0.9, 0.85, 1)
-awning_color = Color(0.18, 0.29, 0.23, 1)
+facade_color = Color(0.8, 0.9, 0.84, 1)
+trim_color = Color(0.98, 0.96, 0.93, 1)
+awning_color = Color(0.56, 0.72, 0.62, 1)
+striped_awning = true
 
 [node name="Home" parent="NorthRow" instance=ExtResource("2_building")]
 position = Vector3(-29, 0, 0)
@@ -83,10 +113,11 @@ display_name = "Home"
 style = 1
 width = 8.0
 floors = 4
-facade_color = Color(0.45, 0.29, 0.23, 1)
-trim_color = Color(0.37, 0.23, 0.18, 1)
+facade_color = Color(0.74, 0.53, 0.49, 1)
+trim_color = Color(0.64, 0.44, 0.41, 1)
 storefront = false
 has_awning = false
+sign_color = Color(0.99, 0.95, 0.9, 1)
 
 [node name="Atelier" parent="NorthRow" instance=ExtResource("2_building")]
 position = Vector3(-19, 0, 0)
@@ -94,18 +125,19 @@ display_name = "Atelier"
 width = 12.0
 depth = 14.0
 floors = 5
-facade_color = Color(0.93, 0.9, 0.85, 1)
-trim_color = Color(0.85, 0.8, 0.72, 1)
-awning_color = Color(0.08, 0.07, 0.07, 1)
+facade_color = Color(0.98, 0.95, 0.9, 1)
+trim_color = Color(0.86, 0.78, 0.62, 1)
+awning_color = Color(0.94, 0.65, 0.72, 1)
 sign_color = Color(0.1, 0.09, 0.09, 1)
+striped_awning = true
 
 [node name="Brownstone2" parent="NorthRow" instance=ExtResource("2_building")]
 position = Vector3(-9.5, 0, 0)
 style = 1
 width = 7.0
 floors = 4
-facade_color = Color(0.5, 0.33, 0.26, 1)
-trim_color = Color(0.4, 0.26, 0.2, 1)
+facade_color = Color(0.78, 0.58, 0.54, 1)
+trim_color = Color(0.68, 0.48, 0.45, 1)
 storefront = false
 has_awning = false
 
@@ -115,10 +147,11 @@ display_name = "Café"
 style = 2
 width = 8.0
 floors = 4
-facade_color = Color(0.87, 0.74, 0.7, 1)
-trim_color = Color(0.96, 0.93, 0.9, 1)
-awning_color = Color(0.37, 0.1, 0.11, 1)
+facade_color = Color(0.98, 0.92, 0.77, 1)
+trim_color = Color(0.99, 0.97, 0.93, 1)
+awning_color = Color(0.93, 0.55, 0.6, 1)
 striped_awning = true
+sign_color = Color(0.55, 0.3, 0.33, 1)
 
 [node name="Showroom" parent="NorthRow" instance=ExtResource("2_building")]
 position = Vector3(7.5, 0, 0)
@@ -126,11 +159,12 @@ display_name = "Showroom"
 width = 11.0
 depth = 14.0
 floors = 6
-facade_color = Color(0.29, 0.29, 0.31, 1)
-trim_color = Color(0.22, 0.22, 0.24, 1)
+facade_color = Color(0.86, 0.83, 0.93, 1)
+trim_color = Color(0.98, 0.96, 0.95, 1)
 has_awning = false
 fire_escape = true
 water_tower = true
+sign_color = Color(0.4, 0.33, 0.55, 1)
 
 [node name="Gallery" parent="NorthRow" instance=ExtResource("2_building")]
 position = Vector3(18, 0, 0)
@@ -138,18 +172,18 @@ display_name = "Gallery"
 style = 2
 width = 10.0
 floors = 4
-facade_color = Color(0.96, 0.95, 0.93, 1)
-trim_color = Color(0.88, 0.86, 0.82, 1)
+facade_color = Color(0.99, 0.98, 0.97, 1)
+trim_color = Color(0.9, 0.88, 0.86, 1)
 has_awning = false
-sign_color = Color(0.1, 0.1, 0.1, 1)
+sign_color = Color(0.1, 0.09, 0.09, 1)
 
 [node name="RedLoft" parent="NorthRow" instance=ExtResource("2_building")]
 position = Vector3(28, 0, 0)
 width = 10.0
 floors = 5
-facade_color = Color(0.6, 0.3, 0.25, 1)
-trim_color = Color(0.9, 0.87, 0.8, 1)
-awning_color = Color(0.12, 0.16, 0.28, 1)
+facade_color = Color(0.96, 0.84, 0.83, 1)
+trim_color = Color(0.99, 0.95, 0.93, 1)
+awning_color = Color(0.1, 0.09, 0.09, 1)
 fire_escape = true
 
 [node name="Brownstone3" parent="NorthRow" instance=ExtResource("2_building")]
@@ -157,8 +191,8 @@ position = Vector3(37.5, 0, 0)
 style = 1
 width = 9.0
 floors = 4
-facade_color = Color(0.42, 0.27, 0.22, 1)
-trim_color = Color(0.34, 0.21, 0.17, 1)
+facade_color = Color(0.74, 0.53, 0.49, 1)
+trim_color = Color(0.64, 0.44, 0.41, 1)
 storefront = false
 has_awning = false
 water_tower = true
@@ -170,9 +204,9 @@ position = Vector3(-37, 0, 20)
 rotation_degrees = Vector3(0, 180, 0)
 width = 12.0
 floors = 6
-facade_color = Color(0.93, 0.9, 0.85, 1)
-trim_color = Color(0.85, 0.8, 0.72, 1)
-awning_color = Color(0.12, 0.16, 0.28, 1)
+facade_color = Color(0.81, 0.88, 0.95, 1)
+trim_color = Color(0.98, 0.97, 0.95, 1)
+awning_color = Color(0.45, 0.58, 0.78, 1)
 water_tower = true
 
 [node name="South2" parent="SouthRow" instance=ExtResource("2_building")]
@@ -180,8 +214,8 @@ position = Vector3(-26, 0, 20)
 rotation_degrees = Vector3(0, 180, 0)
 style = 1
 width = 10.0
-facade_color = Color(0.47, 0.3, 0.24, 1)
-trim_color = Color(0.38, 0.24, 0.19, 1)
+facade_color = Color(0.76, 0.56, 0.52, 1)
+trim_color = Color(0.66, 0.46, 0.43, 1)
 storefront = false
 has_awning = false
 
@@ -191,9 +225,9 @@ rotation_degrees = Vector3(0, 180, 0)
 style = 2
 width = 10.0
 floors = 5
-facade_color = Color(0.86, 0.82, 0.75, 1)
-trim_color = Color(0.95, 0.93, 0.89, 1)
-awning_color = Color(0.18, 0.29, 0.23, 1)
+facade_color = Color(0.8, 0.9, 0.84, 1)
+trim_color = Color(0.98, 0.96, 0.93, 1)
+awning_color = Color(0.56, 0.72, 0.62, 1)
 striped_awning = true
 
 [node name="South4" parent="SouthRow" instance=ExtResource("2_building")]
@@ -201,9 +235,9 @@ position = Vector3(-5.5, 0, 20)
 rotation_degrees = Vector3(0, 180, 0)
 width = 11.0
 floors = 6
-facade_color = Color(0.29, 0.29, 0.31, 1)
-trim_color = Color(0.22, 0.22, 0.24, 1)
-awning_color = Color(0.37, 0.1, 0.11, 1)
+facade_color = Color(0.96, 0.84, 0.83, 1)
+trim_color = Color(0.99, 0.95, 0.93, 1)
+awning_color = Color(0.94, 0.65, 0.72, 1)
 fire_escape = true
 
 [node name="South5" parent="SouthRow" instance=ExtResource("2_building")]
@@ -211,8 +245,8 @@ position = Vector3(5, 0, 20)
 rotation_degrees = Vector3(0, 180, 0)
 style = 1
 width = 10.0
-facade_color = Color(0.5, 0.33, 0.26, 1)
-trim_color = Color(0.4, 0.26, 0.2, 1)
+facade_color = Color(0.74, 0.53, 0.49, 1)
+trim_color = Color(0.64, 0.44, 0.41, 1)
 storefront = false
 has_awning = false
 
@@ -222,17 +256,19 @@ rotation_degrees = Vector3(0, 180, 0)
 style = 2
 width = 11.0
 floors = 5
-facade_color = Color(0.87, 0.74, 0.7, 1)
-trim_color = Color(0.96, 0.93, 0.9, 1)
+facade_color = Color(0.98, 0.92, 0.77, 1)
+trim_color = Color(0.99, 0.97, 0.93, 1)
+awning_color = Color(0.7, 0.62, 0.86, 1)
+striped_awning = true
 
 [node name="South7" parent="SouthRow" instance=ExtResource("2_building")]
 position = Vector3(26, 0, 20)
 rotation_degrees = Vector3(0, 180, 0)
 width = 10.0
 floors = 5
-facade_color = Color(0.6, 0.65, 0.57, 1)
-trim_color = Color(0.92, 0.9, 0.85, 1)
-awning_color = Color(0.08, 0.07, 0.07, 1)
+facade_color = Color(0.86, 0.83, 0.93, 1)
+trim_color = Color(0.98, 0.96, 0.95, 1)
+awning_color = Color(0.1, 0.09, 0.09, 1)
 fire_escape = true
 
 [node name="South8" parent="SouthRow" instance=ExtResource("2_building")]
@@ -240,10 +276,202 @@ position = Vector3(36.5, 0, 20)
 rotation_degrees = Vector3(0, 180, 0)
 style = 1
 width = 11.0
-facade_color = Color(0.42, 0.27, 0.22, 1)
-trim_color = Color(0.34, 0.21, 0.17, 1)
+facade_color = Color(0.72, 0.5, 0.47, 1)
+trim_color = Color(0.62, 0.42, 0.4, 1)
 storefront = false
 has_awning = false
+
+[node name="Avenues" type="Node3D" parent="."]
+
+[node name="West1" parent="Avenues" instance=ExtResource("2_building")]
+position = Vector3(-52, 0, -30)
+rotation_degrees = Vector3(0, 90, 0)
+style = 0
+width = 12.0
+floors = 6
+facade_color = Color(0.86, 0.83, 0.93, 1)
+trim_color = Color(0.98, 0.96, 0.95, 1)
+storefront = true
+awning_color = Color(0.1, 0.09, 0.09, 1)
+
+[node name="West2" parent="Avenues" instance=ExtResource("2_building")]
+position = Vector3(-52, 0, -18)
+rotation_degrees = Vector3(0, 90, 0)
+style = 2
+width = 12.0
+floors = 5
+facade_color = Color(0.98, 0.95, 0.9, 1)
+trim_color = Color(0.86, 0.78, 0.62, 1)
+storefront = true
+awning_color = Color(0.94, 0.65, 0.72, 1)
+
+[node name="West3" parent="Avenues" instance=ExtResource("2_building")]
+position = Vector3(-52, 0, -7)
+rotation_degrees = Vector3(0, 90, 0)
+style = 1
+width = 10.0
+floors = 4
+facade_color = Color(0.74, 0.53, 0.49, 1)
+trim_color = Color(0.64, 0.44, 0.41, 1)
+storefront = false
+has_awning = false
+
+[node name="West4" parent="Avenues" instance=ExtResource("2_building")]
+position = Vector3(-52, 0, 27)
+rotation_degrees = Vector3(0, 90, 0)
+style = 0
+width = 10.0
+floors = 5
+facade_color = Color(0.8, 0.9, 0.84, 1)
+trim_color = Color(0.98, 0.96, 0.93, 1)
+storefront = true
+awning_color = Color(0.56, 0.72, 0.62, 1)
+
+[node name="West5" parent="Avenues" instance=ExtResource("2_building")]
+position = Vector3(-52, 0, 38)
+rotation_degrees = Vector3(0, 90, 0)
+style = 2
+width = 12.0
+floors = 6
+facade_color = Color(0.96, 0.84, 0.83, 1)
+trim_color = Color(0.99, 0.95, 0.93, 1)
+storefront = true
+awning_color = Color(0.1, 0.09, 0.09, 1)
+
+[node name="West6" parent="Avenues" instance=ExtResource("2_building")]
+position = Vector3(-52, 0, 50)
+rotation_degrees = Vector3(0, 90, 0)
+style = 0
+width = 12.0
+floors = 5
+facade_color = Color(0.81, 0.88, 0.95, 1)
+trim_color = Color(0.98, 0.97, 0.95, 1)
+storefront = true
+awning_color = Color(0.45, 0.58, 0.78, 1)
+
+[node name="East1" parent="Avenues" instance=ExtResource("2_building")]
+position = Vector3(52, 0, -30)
+rotation_degrees = Vector3(0, -90, 0)
+style = 0
+width = 12.0
+floors = 6
+facade_color = Color(0.81, 0.88, 0.95, 1)
+trim_color = Color(0.98, 0.97, 0.95, 1)
+storefront = true
+awning_color = Color(0.1, 0.09, 0.09, 1)
+
+[node name="East2" parent="Avenues" instance=ExtResource("2_building")]
+position = Vector3(52, 0, -18)
+rotation_degrees = Vector3(0, -90, 0)
+style = 2
+width = 12.0
+floors = 5
+facade_color = Color(0.96, 0.84, 0.83, 1)
+trim_color = Color(0.99, 0.95, 0.93, 1)
+storefront = true
+awning_color = Color(0.94, 0.65, 0.72, 1)
+
+[node name="East3" parent="Avenues" instance=ExtResource("2_building")]
+position = Vector3(52, 0, -7)
+rotation_degrees = Vector3(0, -90, 0)
+style = 1
+width = 10.0
+floors = 4
+facade_color = Color(0.8, 0.9, 0.84, 1)
+trim_color = Color(0.98, 0.96, 0.93, 1)
+storefront = false
+has_awning = false
+
+[node name="East4" parent="Avenues" instance=ExtResource("2_building")]
+position = Vector3(52, 0, 27)
+rotation_degrees = Vector3(0, -90, 0)
+style = 0
+width = 10.0
+floors = 5
+facade_color = Color(0.74, 0.53, 0.49, 1)
+trim_color = Color(0.64, 0.44, 0.41, 1)
+storefront = true
+awning_color = Color(0.56, 0.72, 0.62, 1)
+
+[node name="East5" parent="Avenues" instance=ExtResource("2_building")]
+position = Vector3(52, 0, 38)
+rotation_degrees = Vector3(0, -90, 0)
+style = 2
+width = 12.0
+floors = 6
+facade_color = Color(0.98, 0.95, 0.9, 1)
+trim_color = Color(0.86, 0.78, 0.62, 1)
+storefront = true
+awning_color = Color(0.1, 0.09, 0.09, 1)
+
+[node name="East6" parent="Avenues" instance=ExtResource("2_building")]
+position = Vector3(52, 0, 50)
+rotation_degrees = Vector3(0, -90, 0)
+style = 0
+width = 12.0
+floors = 5
+facade_color = Color(0.86, 0.83, 0.93, 1)
+trim_color = Color(0.98, 0.96, 0.95, 1)
+storefront = true
+awning_color = Color(0.45, 0.58, 0.78, 1)
+
+[node name="CityBackdrop" type="Node3D" parent="."]
+script = ExtResource("7_backdrop")
+
+[node name="Traffic" type="Node3D" parent="."]
+
+[node name="CarsEastbound" type="Node3D" parent="Traffic"]
+script = ExtResource("8_traffic")
+scene = ExtResource("9_car")
+count = 4
+speed = 8.0
+x_min = -160.0
+x_max = 160.0
+lane_z = 8.2
+keep_distance = 8.0
+lane_width = 2.6
+seed = 3
+
+[node name="CarsWestbound" type="Node3D" parent="Traffic"]
+script = ExtResource("8_traffic")
+scene = ExtResource("9_car")
+count = 4
+speed = 8.0
+x_min = -160.0
+x_max = 160.0
+lane_z = 11.8
+direction = -1
+keep_distance = 8.0
+lane_width = 2.6
+seed = 4
+
+[node name="PeopleNorth" type="Node3D" parent="Traffic"]
+script = ExtResource("8_traffic")
+scene = ExtResource("10_pedestrian")
+count = 7
+speed = 1.3
+x_min = -40.5
+x_max = 40.5
+lane_z = 2.4
+return_z = 3.0
+turn_around = true
+keep_distance = 1.4
+lane_width = 0.9
+seed = 11
+
+[node name="PeopleSouth" type="Node3D" parent="Traffic"]
+script = ExtResource("8_traffic")
+scene = ExtResource("10_pedestrian")
+count = 7
+speed = 1.2
+x_min = -40.5
+x_max = 40.5
+lane_z = 17.7
+return_z = 17.0
+turn_around = true
+keep_distance = 1.4
+lane_width = 0.9
+seed = 12
 
 [node name="StreetDecor" type="Node3D" parent="."]
 

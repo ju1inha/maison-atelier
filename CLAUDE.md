@@ -57,6 +57,10 @@ These games inspire the feel and mechanics. Everything in Maison Atelier (charac
 - Persona 5 = how your time and relationships work (calendar, confidants, perks, stylish UI).
 - Open world = where it happens (an explorable, living fashion city).
 
+### Story [CONFIRM details]
+
+Premise chosen 2026-10-20: **The Inheritance.** A great-aunt who was once a celebrated couturier leaves the player her shuttered SoHo atelier and a sketchbook full of secrets. Years ago a rival fashion house bought her name. The player's goal is to restore the atelier's legacy by Fashion Week. All names, characters, the great-aunt's history and the rival are still Julia's to decide; propose options, don't invent final ones.
+
 **Fantasy for the player:** "I have impeccable taste, and the most exclusive people in the city trust me with their most important moments."
 
 ### Design pillars
@@ -70,8 +74,8 @@ These games inspire the feel and mechanics. Everything in Maison Atelier (charac
 
 - **Phase 0 (done):** Concept prototyped in Base44 as "Elite Stylist: Couture Atelier."
 - **HTML/JS prototype (skipped):** Julia decided (2026-10-19) to skip the browser prototype and build directly in Godot, starting from scratch.
-- **Current:** the walkable slice is now **3D**: a Manhattan-style street (SoHo cast-iron shops + brownstones) in golden-hour light, a cute chibi placeholder player with a mouse-orbit camera, walkable 3D Atelier and Home interiors, doors with fades, and a Day/Time HUD. All art is generated placeholder shapes.
-- **Next:** Julia's mood board → refine the look; then the core loop inside the Atelier (section 8).
+- **Current:** 3D Manhattan street in a bright pastel-luxe look: pastel SoHo shops and brownstones, cross avenues, the street continuing into the distance, a hazy pastel skyline, pedestrians walking the sidewalks, and cars driving both ways (everyone stops for the player). Slim anime placeholder player with a mouse-orbit camera, walkable Atelier and Home, doors with fades, Day/Time HUD. All art is generated placeholder shapes.
+- **Next:** the phone menu (section 8).
 
 ### Decisions log
 
@@ -81,7 +85,11 @@ These games inspire the feel and mechanics. Everything in Maison Atelier (charac
 - 2026-10-19: Long-term goal is a 3D game. Art starts as placeholder shapes and gets swapped for real models later (see section 7, "Placeholder art and swapping in real models").
 - 2026-10-19: ~~First slice is 2D~~ → replaced the same day: **the game is 3D now** (2D files deleted; they're in git history).
 - 2026-10-19: **Setting: New York, upscale Manhattan.** First street mixes SoHo cast-iron boutiques (Atelier, Café, Showroom, Gallery) with a brownstone for Home. All shop names are placeholders.
-- 2026-10-19: **Characters are cute anime/chibi style** (big heads). Real models later, likely made in VRoid Studio (free) and imported (needs a VRM import addon; ask before adding it).
+- 2026-10-19: ~~Characters are chibi~~ → changed 2026-10-20: **slim anime "fashion doll" proportions** with big anime eyes, so full outfits are visible. Real models later, likely made in VRoid Studio (free) and imported (needs a VRM import addon; ask before adding it).
+- 2026-10-20: **Mood board** (Julia's references: Style Savvy: Trendsetters, Girls Mode, The Sims FreePlay shops): bright, soft, airy; blush pink, cream and warm wood; dollhouse-style shop interiors packed with detail; bubbly rounded menus. Take the vibe only, never copy their assets or UI.
+- 2026-10-20: **Palette: "pastel luxe"**: blush pink, cream, warm wood and pastel facades, with champagne gold accents so it still feels upscale.
+- 2026-10-20: **Story premise: A, "The Inheritance"** (see section 2, Story). Details still [CONFIRM].
+- 2026-10-20: **Feature order:** (1) look + living street, done → (2) phone menu → (3) character creator + functional bedroom → (4) inventory and stock → (5) core styling loop.
 - 2026-10-19: **Camera: third-person mouse orbit** (click to capture the mouse, Esc to release; right stick on gamepad).
 - 2026-10-19: **Interiors are walkable**, not menus. The player walks around inside the Atelier and Home freely.
 - 2026-10-19: **Moving between places never uses time.** Time only advances from specific actions (e.g. finishing boutique hours), decided later.
@@ -182,7 +190,7 @@ Output: a score (0–100) mapped to a reaction tier, plus money, reputation and 
 
 **Mood:** quiet luxury meets editorial drama. It should look like a high-end fashion magazine, with Persona-style energy in the transitions and menus.
 
-- **Palette [CONFIRM]:** ivory / cream backgrounds, deep black, champagne gold accents, one bold signature accent (e.g. oxblood or emerald) for highlights and transitions.
+- **Palette (decided 2026-10-20): pastel luxe.** Blush pink, cream, warm wood and pastel facades (mint, lavender, butter, powder blue), with champagne gold accents. Black is only for small contrast details (signs, awnings).
 - **Typography:** an elegant high-contrast serif for headings (e.g. Playfair Display or Cormorant Garamond) and a clean sans-serif for UI text (e.g. Inter or Montserrat). Both are free (SIL Open Font License) and can be bundled in the game.
 - **Layout:** generous white space, thin gold rules, editorial grids, large confident headings.
 - **Motion:** smooth fades and slides; one bold stylized transition for big moments like presenting a look or a rank-up.
@@ -215,6 +223,10 @@ Units are meters. Every object's origin is on the ground; "front" faces +Z.
   - **Decor** (`scenes/world/decor.tscn`): `kind` = lamp post, street tree, hydrant, bench, taxi, planter, crosswalk, clothing rack, mannequin, potted plant, pendant light, mirror.
   - **Block** (`scenes/world/block.tscn`): any plain box (floors, walls, sidewalks, furniture); `top_color` for a trim slab, `solid` off for rugs.
   - All three share `scripts/world/mesh_kit.gd` (shape + material helpers). Generated meshes/collision are internal nodes: not shown in the Scene dock and not saved in the .tscn.
+- **AnimePlaceholder** (`scripts/world/anime_placeholder.gd`): slim anime person from shapes; `skin_color`, `hair_style` (LONG/BOB/BUN/PONYTAIL/SHORT), `hair_color`, `eye_color`, `top_color`, `bottom_style` (SKIRT/PANTS/DRESS), `bottom_color`, `shoe_color`; `randomize_look(rng)`. Used by the player and pedestrians (and later the character creator).
+- **City life:** `LaneTraffic` (`scripts/world/lane_traffic.gd`) spawns a scene along a lane and moves it in x. Cars (`scenes/world/car.tscn`, `vehicle.gd`) wrap around far away; pedestrians (`scenes/world/pedestrian.tscn`) turn around at the street ends and come back on `return_z`. Everyone stops when the player (or someone ahead) is in front. Settings per lane node under `Traffic` in the street scene.
+- **CityBackdrop** (`scripts/world/city_backdrop.gd`): unreachable scenery: the street continuing past the avenues, and a pastel skyline (change `seed` for a different skyline).
+- **Collision layers:** 1 = world (buildings, walls, furniture), 2 = moving things (cars, pedestrians). The player collides with both; the camera's spring arm only with layer 1, so passers-by don't make the camera jump.
 - **Door** (`scenes/world/door.tscn`): Area3D zone in front of a doorway: `prompt_text`, `target_scene` (empty = "Closed for now"), `target_spawn`.
 - Controls (Project Settings → Input Map): `move_*` (WASD, arrows, left stick), `run` (Shift, gamepad B), `interact` (E, Enter, gamepad A), `camera_*` (right stick). Mouse look is handled in `player.gd`.
 - To add a shop: add a Building under `NorthRow`/`SouthRow`, a Door under `Doors` in front of it, and (if enterable) an interior scene + a Marker3D spawn outside the door.
@@ -225,8 +237,8 @@ The rule that keeps art swaps from breaking code: **game scripts never talk to t
 
 - Every world object (the player, a client, a building, a mannequin) is its own scene, e.g. `scenes/world/client.tscn`.
 - The root node holds the script and the gameplay pieces (collision shape, interaction area). The art lives in a single child node named `Visual`.
-- Placeholder: Buildings, Decor and Blocks generate their shapes automatically while `Visual` is empty. The player has a `ChibiPlaceholder` node inside `Visual`.
-- Real art later: drop the imported model (`.glb` from Blender, a VRoid character, or a free CC0 asset) under `Visual`. Generated placeholders disappear by themselves; for the player, delete `ChibiPlaceholder`. Scripts, collisions and signals are untouched.
+- Placeholder: Buildings, Decor, Blocks, cars and the backdrop generate their shapes automatically while `Visual` is empty. The player and pedestrians have an `AnimePlaceholder` node inside `Visual`.
+- Real art later: drop the imported model (`.glb` from Blender, a VRoid character, or a free CC0 asset) under `Visual`. Generated placeholders disappear by themselves; for people, delete `AnimePlaceholder`. Scripts, collisions and signals are untouched.
 - If a model needs animation, the script calls a small helper (e.g. `play_anim("walk")`) on the `Visual` scene, so the script doesn't care which model is inside.
 - Clothing items reference their art by path in their data file (e.g. `model = "res://assets/models/items/silk_blouse.glb"`). Swapping art = changing a path in data, not code.
 
@@ -265,15 +277,18 @@ assets/
 1. Project setup + public GitHub repo (done 2026-10-19)
 2. Decide 2D vs. 3D (done: 3D)
 3. First playable slice: side street, walkable Atelier and Home, doors with fades (done 2026-10-19, rebuilt in 3D the same day)
-4. Refine the look with Julia's mood board
-5. Core loop inside the atelier: one client → brief → style → score → reward
-6. Data-driven items and clients (at least 30 items, 8 clients)
-7. Clear, specific client feedback
-8. Day/calendar loop with restocking
-9. Save/load
-10. Visual polish pass (typography, transitions, reveal screen)
-11. One relationship arc + one event, as a vertical slice
-12. Later: more districts, audio, real models and animation
+4. Mood board look: pastel luxe, slim anime characters, skyline, pedestrians, moving cars (done 2026-10-20)
+5. Phone menu (Tab): Map (fast travel), Messages, Closet, Settings (mouse speed, volume, fullscreen), Save
+6. Character creator at the start + functional bedroom (bed = sleep/end day/save, wardrobe = change outfit, mirror = change look, laptop = messages)
+7. Inventory and stock: clothing item data, personal closet, boutique stock room, buying at the Showroom
+8. Core loop inside the atelier: one client → brief → style → score → reward
+9. Data-driven items and clients (at least 30 items, 8 clients)
+10. Clear, specific client feedback
+11. Day/calendar loop with restocking
+12. Save/load
+13. Visual polish pass (typography, transitions, reveal screen)
+14. One relationship arc + one event, as a vertical slice
+15. Later: more districts, audio, real models and animation
 
 ## 9. Working rules for Claude Code
 
